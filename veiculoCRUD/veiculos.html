@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veiculos</title>
+</head>
+<body>
+    <label for="inputPlaca">Placa:</label>
+   <input type="text" id="inputPlaca">
+   <input type="button" value="Procure" id="btProcure" onclick="procure()" style="display:inline;">
+   <input type="button" value="Inserir" id="btInserir" onclick="inserir()" style="display:none;">
+   <input type="button" value="Alterar" id="btAlterar" onclick="alterar()" style="display:none;">
+   <input type="button" value="Excluir" id="btExcluir" onclick="excluir()" style="display:none;">
+   <br><br>
+
+   <label for="inputMarca">Marca:</label>
+   <input type="text" id="inputMarca">
+   <br>
+   <label for="inputModelo">Modelo</label>
+   <input type="text" id="inputModelo">
+   <br>
+   <label for="inputAno">Ano</label>
+   <input type="number" id="inputAno">
+   <br>
+
+   <br><br>
+   <div id="divAviso" style="background-color: antiquewhite;"></div>
+   <br>
+   <input type="button" value="Salvar" id="btSalvar" onclick="salvar()" style="display:none;">
+   <input type="button" value="Cancelar" id="btCancelar" onclick="cancelarOperacao()" style="display:none;">
+   <br><br>
+   <!-- <input type="button" value="Listar" onclick="listar()">
+    <br><br> -->
+
+   <div id="outputSaida" style="background-color: aqua;">...</div>
+
+   <script src="./veiculoClasse.js"></script>
+   <script src="./veiculoControle.js"></script>
+   <script>
+    console.log(listaVeiculos)
+   </script>
+</body>
+
+</html>
