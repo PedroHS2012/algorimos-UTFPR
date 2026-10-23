@@ -122,6 +122,7 @@ function excluir() {
     zerar();
         document.getElementById("btVoltar").style.display = "inline";
             document.getElementById("divAviso").innerHTML = "Produto EXCLUIDO, clique VOLTAR para desfazer";
+                document.getElementById("btVoltar").value = "Desfazer";
 
 }
 function fExcluir(placaC, lista) {
@@ -145,6 +146,7 @@ function voltar() {
     exibirLista(listaVeiculos);
         zerar();
                 document.getElementById("btVoltar").style.display = "none";
+                document.getElementById("btVoltar").value = "Voltar";
 
         alterado = null;
 }
