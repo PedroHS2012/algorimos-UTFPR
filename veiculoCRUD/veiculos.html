@@ -6,7 +6,7 @@
     <title>Veiculos</title>
 </head>
 <body>  
-    <label for="inputPlaca">Placa:(ela é invariavel, se errar, exclua e crie outro elemento)</label> <br>
+    <label for="inputPlaca">Placa:(É invariavel, se errar, exclua e crie outro elemento)</label> <br>
    <input type="text" id="inputPlaca">
    <input type="button" value="Procure" id="btProcure" onclick="procure()" style="display:inline;">
    <input type="button" value="Inserir" id="btInserir" onclick="inserir()" style="display:none;">
@@ -32,16 +32,11 @@
    <input type="button" value="Salvar" id="btSalvar" onclick="salvar()" style="display:none;">
    <input type="button" value="Cancelar" id="btCancelar" onclick="cancelarOperacao()" style="display:none;">
    <br><br>
-   <!-- <input type="button" value="Listar" onclick="listar()">
-    <br><br> -->
 
    <div id="outputSaida" style="background-color: aqua;">...</div>
 
    <script src="./veiculoClasse.js"></script>
    <script src="./veiculoControle.js"></script>
-   <script>
-    console.log(listaVeiculos)
-   </script>
 </body>
 
 </html>

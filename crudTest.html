@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>CRUD Carro</title>
+</head>
+<body>
+<label for='inputReferencia'>placa:(É invariavel, se errar, exclua e crie outro elemento)</label> <br>
+<input type='text' id='inputReferencia'>
+<input type='button' value='Procure' id='btProcure' onclick='procure()' style='display:inline;'>
+<input type='button' value='Inserir' id='btInserir' onclick='inserir()' style='display:none;'>
+<input type='button' value='Alterar' id='btAlterar' onclick='alterar()' style='display:none;'>
+<input type='button' value='Excluir' id='btExcluir' onclick='excluir()' style='display:none;'>
+<input type = 'button' value = 'Voltar' id = 'btVoltar' onclick = 'voltar()' style = 'display:none;' >
+<br><br>
+<label for='inputano'>ano:</label>
+<input type='number' id='inputano' readonly='true'>
+<br>
+<label for='inputmarca'>marca:</label>
+<input type='text' id='inputmarca' readonly='true'>
+<br>
+<label for='inputmodlo'>modlo:</label>
+<input type='text' id='inputmodlo' readonly='true'>
+<br>
+<br><br>
+<div id='divAviso' style='background-color: antiquewhite;'></div>
+<br>
+<input type='button' value='Salvar' id='btSalvar' onclick='salvar()' style='display:none;'>
+<input type='button' value='Cancelar' id='btCancelar' onclick='cancelarOperacao()' style='display:none;'>
+<br><br>
+<div id='outputSaida' style='background-color: aqua;'>...</div>
+<script>
+class Carro{
+constructor(placa, ano, marca, modlo){
+this.placa = placa;
+this.ano = ano;
+this.marca = marca;
+this.modlo = modlo;
+}
+}
+</script>
+<script>
+let lista = [];
+let alterado = null;
+function procure() {
+let placa = document.getElementById('inputReferencia').value;
+let item = null;
+if (placa == '') {
+alert('coloque uma referencia');
+return
+}
+document.getElementById('inputReferencia').readOnly = true;
+for (let i = 0; i < lista.length; i++) {
+if (lista[i].placa == placa) {
+item = lista[i];
+document.getElementById('inputano').value = item.ano;
+document.getElementById('inputmarca').value = item.marca;
+document.getElementById('inputmodlo').value = item.modlo;
+document.getElementById('divAviso').innerHTML = 'Produto encontrado, clique Alterar para alterar';
+document.getElementById('btAlterar').style.display = 'inline';
+document.getElementById('btExcluir').style.display = 'inline';
+break
+}
+}
+if (item == null) {
+document.getElementById('divAviso').innerHTML = 'Produto nao encontrado, clique inserir para adicionar';
+document.getElementById('btInserir').style.display = 'inline';
+}
+item = null;
+document.getElementById('btProcure').style.display = 'none';
+document.getElementById('inputano').readOnly = false;
+document.getElementById('inputmarca').readOnly = false;
+document.getElementById('inputmodlo').readOnly = false;
+document.getElementById('btVoltar').style.display = 'inline';
+}
+function inserir() {
+let referencial = document.getElementById('inputReferencia').value;
+let a1C = parseFloat(document.getElementById('inputano').value);
+let a2C = document.getElementById('inputmarca').value;
+let a3C = document.getElementById('inputmodlo').value;
+if ( referencial == '' || isNaN(a1C) || a2C == '' || a3C == ''){
+alert('insira todos os parametros');
+return
+}
+fInserir(referencial, a1C, a2C, a3C, lista)
+document.getElementById('divAviso').innerHTML = 'Produto adicionado';
+exibirLista(lista);
+zerar();
+document.getElementById('btVoltar').style.display = 'none';
+}
+function fInserir(referencial, a1C, a2C, a3C, lista) {
+let itens = new Carro(referencial, a1C, a2C, a3C,);
+lista.push(itens);
+}
+function exibirLista(lista) {
+let string = '';
+document.getElementById('outputSaida').innerHTML = '';
+for (let i = 0; i < lista.length; i++) {
+string +=placa lista[i].placa + ' // ' + ano lista[i].ano + ' ' +marca lista[i].marca + ' ' +modlo lista[i].modlo + ' ' +'<br>'; 
+}
+document.getElementById('outputSaida').innerHTML = string;
+}
+function alterar() {
+let referencial = document.getElementById('inputReferencia').value;
+let a1C = parseFloat(document.getElementById('inputano').value);
+let a2C = document.getElementById('inputmarca').value;
+let a3C = document.getElementById('inputmodlo').value;
+if( isNaN(a1C) || a2C == '' || a3C == '') {
+alert('insira todos os parametros');
+return
+}
+for (let i = 0; i < lista.length; i++) {
+if (referencial == lista[i].placa) {
+let itemQuestao = lista[i];
+itemQuestao.ano = a1C;
+itemQuestao.marca = a2C;
+itemQuestao.modlo = a3C;
+break
+}
+}
+exibirLista(lista);
+zerar();
+document.getElementById('btVoltar').style.display = 'none';
+document.getElementById('divAviso').innerHTML = 'Produto Alterado';
+}
+function zerar() {
+document.getElementById('inputano').readOnly = true;
+document.getElementById('inputano').value = '';
+document.getElementById('inputmarca').readOnly = true;
+document.getElementById('inputmarca').value = '';
+document.getElementById('inputmodlo').readOnly = true;
+document.getElementById('inputmodlo').value = '';
+document.getElementById('inputReferencia').readOnly = false;
+document.getElementById('inputReferencia').value = '';
+document.getElementById('btProcure').style.display = 'inline';
+document.getElementById('btExcluir').style.display = 'none';
+document.getElementById('btAlterar').style.display = 'none';
+document.getElementById('btInserir').style.display = 'none';
+}
+function excluir() {
+let referencial = document.getElementById('inputReferencia').value;
+lista = fExcluir(referencial, lista);
+exibirLista(lista);
+zerar();
+document.getElementById('btVoltar').style.display = 'inline';
+document.getElementById('divAviso').innerHTML = 'Produto EXCLUIDO, clique VOLTAR para desfazer';
+document.getElementById('btVoltar').value = 'Desfazer';
+}
+function fExcluir(referencial, lista) {
+let newlista = [];
+for (let i = 0; i < lista.length; i++) {
+if (lista[i].placa != referencial) {
+newlista.push(lista[i]);
+} else {
+alterado = lista[i];
+}
+}
+return newlista;
+}
+function voltar() {
+if(alterado != null){
+fInserir( alterado.placa, alterado.ano, alterado.marca, alterado.modlo, lista);
+document.getElementById('divAviso').innerHTML = 'Produto reenserido';
+}
+exibirLista(lista);
+zerar();
+document.getElementById('btVoltar').style.display = 'none';
+document.getElementById('btVoltar').value = 'Voltar';
+alterado = null;
+}
+</script>
+</body>
+</html>
