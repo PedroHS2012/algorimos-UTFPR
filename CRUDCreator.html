@@ -13,7 +13,10 @@
     <textarea cols='50' rows='20' type='text' id='inputAtributos'
         placeholder='Coloque os atributos e seus tipos'></textarea><br>
     <button onclick='criar()'>Criar</button><br>
-    <textarea cols='50' rows='20' type='text' id='saida' readonly='true'></textarea>
+    <textarea cols='50' rows='20' type='text' id='saidaHTML' readonly='true'></textarea>
+    <textarea cols='50' rows='20' type='text' id='saidaControle' readonly='true'></textarea>
+    <textarea cols='50' rows='20' type='text' id='saidaClasse' readonly='true'></textarea>
+
     <script>
         function criar() {
             let nome = document.getElementById('nomeClasse').value;
@@ -22,7 +25,8 @@
                 atributos[i] = atributos[i].split(';');
             }
             let referencial = atributos[0][1];
-            let string = "<!DOCTYPE html>\n" +
+            //parte HTML
+            let HTML = "<!DOCTYPE html>\n" +
                 "<html lang='en'>\n" +
                 "<head>\n" +
                 "<meta charset='UTF-8'>\n" +
@@ -30,35 +34,29 @@
                 "<title>CRUD " + nome + "</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "<label for='inputReferencia'>"+atributos[0][1]+":(É invariavel, se errar, exclua e crie outro elemento)</label> <br>\n";
-if(atributos[0][0]=="number"){
-    string+="<input type='number' id='inputReferencia'>\n"
-}else if(atributos[0][0]=="text"){
-   string+="<input type='text' id='inputReferencia'>\n" 
-} else{
+                "<label for='inputReferencia'>" + atributos[0][1] + ":(É invariavel, se errar, exclua e crie outro elemento)</label> <br>\n";
+            if (atributos[0][0] == "number") {
+                HTML += "<input type='number' id='inputReferencia'>\n"
+            } else if (atributos[0][0] == "text") {
+                HTML += "<input type='text' id='inputReferencia'>\n"
+            } else {
                 alert("erro, coloque number ou text para o referencial")
                 return
-}
-string+="<input type='button' value='Procure' id='btProcure' onclick='procure()' style='display:inline;'>\n" +
+            }
+            HTML += "<input type='button' value='Procure' id='btProcure' onclick='procure()' style='display:inline;'>\n" +
                 "<input type='button' value='Inserir' id='btInserir' onclick='inserir()' style='display:none;'>\n" +
                 "<input type='button' value='Alterar' id='btAlterar' onclick='alterar()' style='display:none;'>\n" +
                 "<input type='button' value='Excluir' id='btExcluir' onclick='excluir()' style='display:none;'>\n" +
                 "<input type = 'button' value = 'Voltar' id = 'btVoltar' onclick = 'voltar()' style = 'display:none;' >\n" +
 
-                "<br><br>\n" +
+                "<br><br>\n"
 
-                "<label for='input"
-
-            for (let i = 1; i < atributos.length - 1; i++) {
-                string += atributos[i][1] + "'>" + atributos[i][1] + ":</label>\n" +
+            for (let i = 1; i < atributos.length; i++) {
+                HTML += "<label for='input" + atributos[i][1] + "'>" + atributos[i][1] + ":</label>\n" +
                     "<input type='" + atributos[i][0] + "' id='input" + atributos[i][1] + "' readonly='true'>\n" +
-                    "<br>\n" +
-                    "<label for='input"
+                    "<br>\n"
             }
-
-            string += atributos[atributos.length - 1][1] + "'>" + atributos[atributos.length - 1][1] + ":</label>\n" +
-                "<input type='" + atributos[atributos.length - 1][0] + "' id='input" + atributos[atributos.length - 1][1] + "' readonly='true'>\n" +
-                "<br>\n" +
+            HTML += "<br>\n" +
                 "<br><br>\n" +
                 "<div id='divAviso' style='background-color: antiquewhite;'></div>\n" +
                 "<br>\n" +
@@ -67,22 +65,28 @@ string+="<input type='button' value='Procure' id='btProcure' onclick='procure()'
                 "<br><br>\n" +
 
                 "<div id='outputSaida' style='background-color: aqua;'>...</div>\n" +
+                "<input type='button' value='Persistir' id='btPersisitir' onclick='prepararESalvarCSV()'>\n" +
+                "<input type='button' value='Recuperar' id='btRecuperar' onclick='abrirArquivoSalvoEmLocalPermanente()'>\n" +
+                "<script" +
+                " src='./classe" + nome + ".js'" +
+                "><\/script>\n" +
+                "<script" +
+                " src='./controle" + nome + ".js'" +
+                "><\/script>\n" +
+                "<\/body>\n" +
+                "<\/html>\n";
 
-                "<script>\n" +
-                "class " + nome + "{\n" +
+            //parte classe 
+            let classe = "class " + nome + "{\n" +
                 "constructor(";
-            for (let i = 0; i < atributos.length - 1; i++) {
-                string += atributos[i][1] + ", ";
-            }
-            string += atributos[atributos.length - 1][1] + "){\n";
+            classe += atributos.map(a => a[1]).join(", ") + "){\n";
             for (let i = 0; i < atributos.length; i++) {
-                string += "this." + atributos[i][1] + " = " + atributos[i][1] + ";\n";
+                classe += "this." + atributos[i][1] + " = " + atributos[i][1] + ";\n";
             }
-            string += "}\n" +
-                "}\n" +
-                "<\/script>\n" +
-                "<script>\n" +
-                "let lista = [];\n" +
+            classe += "}\n" +
+                "}\n"
+            //parte controle
+            let string = "let lista = [];\n" +
                 "let alterado = null;\n" +
 
 
@@ -123,7 +127,6 @@ string+="<input type='button' value='Procure' id='btProcure' onclick='procure()'
                 "if (item == null) {\n" +
                 "document.getElementById('divAviso').innerHTML = 'Produto nao encontrado, clique inserir para adicionar';\n" +
                 "document.getElementById('btInserir').style.display = 'inline';\n" +
-
                 "}\n" +
 
                 "item = null;\n" +
@@ -151,37 +154,33 @@ string+="<input type='button' value='Procure' id='btProcure' onclick='procure()'
                     return
                 }
             }
-            string += "if ("
+            let condicoes = [];
+
             if (atributos[0][0] == "number") {
-                string += " isNaN(referencial) ||"
+                condicoes.push("referencial == '' || isNaN(referencial)");
             } else if (atributos[0][0] == "text") {
-                string += " referencial == '' ||"
+                condicoes.push("referencial == ''");
             } else {
-                alert("erro, coloque number ou text para o referencial")
-                return
+                alert("erro, coloque number ou text para o referencial");
+                return;
             }
-            for (let i = 1; i < atributos.length - 1; i++) {
+
+            for (let i = 1; i < atributos.length; i++) {
                 if (atributos[i][0] == "number") {
-                    string += " isNaN(a" + i + "C) ||"
+                    condicoes.push("isNaN(a" + i + "C)");
                 } else if (atributos[i][0] == "text") {
-                    string += " a" + i + "C == '' ||"
+                    condicoes.push("a" + i + "C == ''");
                 } else {
-                    alert("erro, coloque tipo para todos os paramentros")
-                    return
+                    alert("erro, coloque tipo para todos os parametros");
+                    return;
                 }
             }
-            if (atributos[atributos.length - 1][0] == "number") {
-                string += " isNaN(a" + (atributos.length - 1) + "C)){\n"
-            } else if (atributos[atributos.length - 1][0] == "text") {
-                string += " a" + (atributos.length - 1) + "C == ''){\n"
-            } else {
-                alert("erro, coloque tipo para todos os paramentros")
-                return
-            }
-            string += "alert('insira todos os parametros');\n" +
-                "return\n" +
+
+            string += "if (" + condicoes.join(" || ") + ") {\n" +
+                "alert('insira todos os parametros');\n" +
+                "return;\n" +
                 "}\n" +
-                "fInserir(referencial,"
+                "fInserir(referencial,";
             for (let i = 1; i < atributos.length; i++) {
                 string += " a" + i + "C,"
             }
@@ -205,16 +204,15 @@ string+="<input type='button' value='Procure' id='btProcure' onclick='procure()'
                 "lista.push(itens);\n" +
 
                 "}\n" +
-
                 "function exibirLista(lista) {\n" +
                 "let string = '';\n" +
                 "document.getElementById('outputSaida').innerHTML = '';\n" +
-                "for (let i = 0; i < lista.length; i++) {\n" +
-                "string += lista[i]." + referencial + " + ' // ' + ";
-            for (let i = 1; i < atributos.length; i++) {
-                string += " lista[i]." + atributos[i][1] + " + ' ' +"
-            }
-            string += "'<br>'; \n" +
+                "for (let i = 0; i < lista.length; i++) {\n"
+            string += "string += " +
+                atributos.map(a =>
+                    "'" + a[1] + ": ' + lista[i]." + a[1] + " + ' <br> '"
+                ).join(" + ") +
+                " + '-----------------------------------------------------------------------------<br>';\n" +
                 "}\n" +
                 "document.getElementById('outputSaida').innerHTML = string;\n" +
                 "}\n" +
@@ -231,29 +229,26 @@ string+="<input type='button' value='Procure' id='btProcure' onclick='procure()'
                     return
                 }
             }
-            string += "if("
-            for (let i = 1; i < atributos.length - 1; i++) {
-                if (atributos[i][0] == "number") {
-                    string += " isNaN(a" + i + "C) ||"
-                } else if (atributos[i][0] == "text") {
-                    string += " a" + i + "C == '' ||"
-                } else {
-                    alert("erro, coloque tipo para todos os paramentros")
-                    return
+            if (atributos.length > 1) {
+                let condicoesAlterar = [];
+
+                for (let i = 1; i < atributos.length; i++) {
+                    if (atributos[i][0] == "number") {
+                        condicoesAlterar.push("isNaN(a" + i + "C)");
+                    } else if (atributos[i][0] == "text") {
+                        condicoesAlterar.push("a" + i + "C == ''");
+                    } else {
+                        alert("erro, coloque tipo para todos os parametros");
+                        return;
+                    }
                 }
+
+                string += "if (" + condicoesAlterar.join(" || ") + ") {\n" +
+                    "alert('insira todos os parametros');\n" +
+                    "return;\n" +
+                    "}\n";
             }
-            if (atributos[atributos.length - 1][0] == "number") {
-                string += " isNaN(a" + (atributos.length - 1) + "C) ) {\n";
-            } else if (atributos[atributos.length - 1][0] == "text") {
-                string += " a" + (atributos.length - 1) + "C == '') {\n";
-            } else {
-                alert("erro, coloque tipo para todos os paramentros")
-                return
-            }
-            string += "alert('insira todos os parametros');\n" +
-                "return\n" +
-                "}\n" +
-                "for (let i = 0; i < lista.length; i++) {\n" +
+            string += "for (let i = 0; i < lista.length; i++) {\n" +
                 "if (referencial == lista[i]." + referencial + ") {\n" +
                 "let itemQuestao = lista[i];\n"
             for (let i = 1; i < atributos.length; i++) {
@@ -288,7 +283,19 @@ string+="<input type='button' value='Procure' id='btProcure' onclick='procure()'
                 "}\n" +
 
                 "function excluir() {\n" +
-                "let referencial = document.getElementById('inputReferencia').value;\n" +
+                "let referencial = document.getElementById('inputReferencia').value;\n";
+            if (atributos[0][0] == "number") {
+                string += "if (referencial == '' || isNaN(referencial)) {\n";
+            } else if (atributos[0][0] == "text") {
+                string += "if (referencial == '') {\n";
+            } else {
+                alert("erro, coloque number ou text para o referencial");
+                return;
+            }
+
+            string += "alert('coloque uma referencia valida');\n" +
+                "return;\n" +
+                "}\n" +
                 "lista = fExcluir(referencial, lista);\n" +
                 "exibirLista(lista);\n" +
                 "zerar();\n" +
@@ -327,10 +334,81 @@ string+="<input type='button' value='Procure' id='btProcure' onclick='procure()'
 
                 "alterado = null;\n" +
                 "}\n" +
-                "<\/script>\n" +
-                "<\/body>\n" +
-                "<\/html>\n";
-            document.getElementById("saida").value = string;
+                "function persistirEmLocalPermanente(arquivoDestino, conteudo) {\n" +
+                "const blob = new Blob([conteudo], { type: 'text/plain' }); \n" +
+                "const link = document.createElement('a');\n" +
+                "link.href = URL.createObjectURL(blob);\n" +
+                "link.download = arquivoDestino;\n" +
+                "link.click();\n" +
+                "URL.revokeObjectURL(link.href);\n" +
+                "}\n" +
+
+                "function abrirArquivoSalvoEmLocalPermanente() {\n" +
+
+                "const input = document.createElement('input');\n" +
+                "input.type = 'file';\n" +
+                "input.accept = '.csv';\n" +
+                "input.onchange = function (event) {\n" +
+                "const arquivo = event.target.files[0];\n" +
+                "if (arquivo) {\n" +
+                "converterDeCSVparaListaObjeto(arquivo);\n" +
+                "}\n" +
+                "};\n" +
+                "input.click();\n" +
+                "}\n" +
+
+                "function prepararESalvarCSV() {\n" +
+                "let nomeDoArquivoDestino = '" + nome + ".csv';\n" +
+                "let textoCSV = '';\n" +
+                "for (let i = 0; i < lista.length; i++) {\n" +
+                "const linha = lista[i];\n" +
+                "textoCSV +=  linha."
+            let arrayAux = [];
+            for (let i = 0; i < atributos.length; i++) {
+                arrayAux.push(atributos[i][1]);
+            }
+            arrayAux = arrayAux.join("+ ';' + linha.");
+            string += arrayAux
+            string += " + '\\n';\n" +
+                "}\n" +
+                "persistirEmLocalPermanente(nomeDoArquivoDestino, textoCSV);\n" +
+                "}\n" +
+
+                "function converterDeCSVparaListaObjeto(arquivo) {\n" +
+                "const leitor = new FileReader();\n" +
+                "leitor.onload = function (e) {\n" +
+                "const conteudo = e.target.result; \n" +
+                "const linhas = conteudo.split('\n');\n" +
+                "lista = [];\n" +
+
+                "for (let i = 0; i < linhas.length; i++) {\n" +
+                "const linha = linhas[i].trim();\n" +
+                "if (linha) {\n" +
+                "const dados = linha.split(';');\n" +
+                "let novo" + nome + " = new " + nome + "(\n"
+            for (let i = 0; i < atributos.length; i++) {
+                if (atributos[i][0] == "number") {
+                    string += "parseFloat(dados[" + i + "]),\n"
+                } else if (atributos[i][0] == "text") {
+                    string += "dados[" + i + "],\n"
+                } else {
+                    alert('coloque "number" ou "text" para todos os atributos');
+                    return;
+                }
+            }
+            string += ");\n" +
+                "lista.push(novo" + nome + ");\n" +
+                "}\n" +
+                "}\n" +
+                "exibirLista(lista);\n" +
+                "document.getElementById('divAviso').innerHTML = 'Arquivo carregado com sucesso!';\n" +
+                "};\n" +
+                "leitor.readAsText(arquivo);\n" +
+                "}\n"
+            document.getElementById("saidaControle").value = string;
+            document.getElementById("saidaHTML").value = HTML;
+            document.getElementById("saidaClasse").value = classe;
+
         }
     </script>
 </body>
