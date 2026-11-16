@@ -59,14 +59,12 @@
             HTML += "<br>\n" +
                 "<br><br>\n" +
                 "<div id='divAviso' style='background-color: antiquewhite;'></div>\n" +
-                "<br>\n" +
-                "<input type='button' value='Salvar' id='btSalvar' onclick='salvar()' style='display:none;'>\n" +
-                "<input type='button' value='Cancelar' id='btCancelar' onclick='cancelarOperacao()' style='display:none;'>\n" +
                 "<br><br>\n" +
 
                 "<div id='outputSaida' style='background-color: aqua;'>...</div>\n" +
                 "<input type='button' value='Persistir' id='btPersisitir' onclick='prepararESalvarCSV()'>\n" +
                 "<input type='button' value='Recuperar' id='btRecuperar' onclick='abrirArquivoSalvoEmLocalPermanente()'>\n" +
+                   "<input type='button' value='Listar Lista Completa' id='btListar' onclick='listar()'>\n" +
                 "<script" +
                 " src='./classe" + nome + ".js'" +
                 "><\/script>\n" +
@@ -378,7 +376,7 @@
                 "const leitor = new FileReader();\n" +
                 "leitor.onload = function (e) {\n" +
                 "const conteudo = e.target.result; \n" +
-                "const linhas = conteudo.split('\n');\n" +
+                "const linhas = conteudo.split('\\n');\n" +
                 "lista = [];\n" +
 
                 "for (let i = 0; i < linhas.length; i++) {\n" +
@@ -404,7 +402,11 @@
                 "document.getElementById('divAviso').innerHTML = 'Arquivo carregado com sucesso!';\n" +
                 "};\n" +
                 "leitor.readAsText(arquivo);\n" +
-                "}\n"
+                "}\n"+
+                "function listar(){\n"+
+    "exibirLista(lista);\n"+
+"}\n"
+
             document.getElementById("saidaControle").value = string;
             document.getElementById("saidaHTML").value = HTML;
             document.getElementById("saidaClasse").value = classe;
