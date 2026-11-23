@@ -1,250 +1,431 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='pt-BR'>
 
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>CRUD Pessoas</title>
+    <title>CRUD test</title>
 </head>
 
 <body>
-    <label for='inputReferencia'>CPF:(É invariavel, se errar, exclua e crie outro elemento)</label> <br>
-    <input type='number' id='inputReferencia'>
-    <input type='button' value='Procure' id='btProcure' onclick='procure()' style='display:inline;'>
-    <input type='button' value='Inserir' id='btInserir' onclick='inserir()' style='display:none;'>
-    <input type='button' value='Alterar' id='btAlterar' onclick='alterar()' style='display:none;'>
-    <input type='button' value='Excluir' id='btExcluir' onclick='excluir()' style='display:none;'>
-    <input type='button' value='Voltar' id='btVoltar' onclick='voltar()' style='display:none;'>
-    <br><br>
-    <label for='inputnome'>nome:</label>
-    <input type='text' id='inputnome' readonly='true'>
-    <br>
-    <label for='inputidade'>idade:</label>
-    <input type='number' id='inputidade' readonly='true'>
-    <br>
-    <label for='inputpeso'>peso:</label>
-    <input type='number' id='inputpeso' readonly='true'>
-    <br>
-    <label for='inputaltura'>altura:</label>
-    <input type='number' id='inputaltura' readonly='true'>
-    <br>
-    <br>
-    <br><br>
-    <div id='divAviso' style='background-color: antiquewhite;'></div>
-    <br>
-    <input type='button' value='Salvar' id='btSalvar' onclick='salvar()' style='display:none;'>
-    <input type='button' value='Cancelar' id='btCancelar' onclick='cancelarOperacao()' style='display:none;'>
-    <br><br>
-    <div id='outputSaida' style='background-color: aqua;'>...</div>
-         <input type="button" value="Persistir" id="btPersisitir" onclick="prepararESalvarCSV()">
-   <input type="button" value="Recuperar" id="btRecuperar" onclick="abrirArquivoSalvoEmLocalPermanente()">
-    <script>
-class Pessoas{
-constructor(CPF, nome, idade, peso, altura){
-this.CPF = CPF;
-this.nome = nome;
-this.idade = idade;
-this.peso = peso;
-this.altura = altura;
-}
-}
+    <h1>Criador de CRUD</h1><br>
+    <input type='text' id='nomeClasse' placeholder='Coloque o nome da classe'><br>
+    <textarea cols='50' rows='20' type='text' id='inputAtributos'
+        placeholder='Coloque os atributos e seus tipos'></textarea><br>
+    <button onclick='criar()'>Criar</button><br>
+    <textarea cols='50' rows='20' type='text' id='saidaHTML' readonly='true'></textarea>
+    <textarea cols='50' rows='20' type='text' id='saidaControle' readonly='true'></textarea>
+    <textarea cols='50' rows='20' type='text' id='saidaClasse' readonly='true'></textarea>
 
-    </script>
     <script>
-        let lista = [];
-        let alterado = null;
-        function procure() {
-            let CPF = parseFloat(document.getElementById('inputReferencia').value);
-            let item = null;
-            if (isNaN(CPF)) {
-                alert('coloque uma referencia');
-                return
+        function criar() {
+            let nome = document.getElementById('nomeClasse').value;
+            let atributos = document.getElementById('inputAtributos').value
+                .split(/\r?\n/)
+                .map(linha => linha.trim())
+                .filter(linha => linha !== '');
+            for (let i = 0; i < atributos.length; i++) {
+                atributos[i] = atributos[i].split(';');
             }
-            document.getElementById('inputReferencia').readOnly = true;
-            for (let i = 0; i < lista.length; i++) {
-                if (lista[i].CPF == CPF) {
-                    item = lista[i];
-                    document.getElementById('inputnome').value = item.nome;
-                    document.getElementById('inputidade').value = item.idade;
-                    document.getElementById('inputpeso').value = item.peso;
-                    document.getElementById('inputaltura').value = item.altura;
-                    document.getElementById('divAviso').innerHTML = 'Produto encontrado, clique Alterar para alterar';
-                    document.getElementById('btAlterar').style.display = 'inline';
-                    document.getElementById('btExcluir').style.display = 'inline';
-                    break
-                }
+            let referencial = atributos[0][1];
+            //parte HTML
+            let HTML = "<!DOCTYPE html>\n" +
+                "<html lang='en'>\n" +
+                "<head>\n" +
+                "<meta charset='UTF-8'>\n" +
+                "<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n" +
+                "<title>CRUD " + nome + "</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<label for='inputReferencia'>" + atributos[0][1] + ":(É invariavel, se errar, exclua e crie outro elemento)</label> <br>\n";
+            if (atributos[0][0] == "float" || atributos[0][0] == "int") {
+                HTML += "<input type='number' id='inputReferencia'>\n"
+            } else if (atributos[0][0] == "text") {
+                HTML += "<input type='text' id='inputReferencia'>\n"
+            } else {
+                HTML += "<input type='text' id='inputReferencia'>\n"
             }
-            if (item == null) {
-                document.getElementById('divAviso').innerHTML = 'Produto nao encontrado, clique inserir para adicionar';
-                document.getElementById('btInserir').style.display = 'inline';
-            }
-            item = null;
-            document.getElementById('btProcure').style.display = 'none';
-            document.getElementById('inputnome').readOnly = false;
-            document.getElementById('inputidade').readOnly = false;
-            document.getElementById('inputpeso').readOnly = false;
-            document.getElementById('inputaltura').readOnly = false;
-            document.getElementById('btVoltar').style.display = 'inline';
-        }
-        function inserir() {
-            let referencial = document.getElementById('inputReferencia').value;
-            let a1C = document.getElementById('inputnome').value;
-            let a2C = parseFloat(document.getElementById('inputidade').value);
-            let a3C = parseFloat(document.getElementById('inputpeso').value);
-            let a4C = parseFloat(document.getElementById('inputaltura').value);
-            if (referencial == '' || isNaN(referencial) || a1C == '' || isNaN(a2C) || isNaN(a3C) || isNaN(a4C)) {
-                alert('insira todos os parametros');
-                return;
-            }
-            fInserir(referencial, a1C, a2C, a3C, a4C, lista)
-            document.getElementById('divAviso').innerHTML = 'Produto adicionado';
-            exibirLista(lista);
-            zerar();
-            document.getElementById('btVoltar').style.display = 'none';
-        }
-        function fInserir(referencial, a1C, a2C, a3C, a4C, lista) {
-            let itens = new Pessoas(referencial, a1C, a2C, a3C, a4C,);
-            lista.push(itens);
-        }
-        function exibirLista(lista) {
-            let string = '';
-            document.getElementById('outputSaida').innerHTML = '';
-            for (let i = 0; i < lista.length; i++) {
-                string += 'CPF: ' + lista[i].CPF + ' <br> ' + 'nome: ' + lista[i].nome + ' <br> ' + 'idade: ' + lista[i].idade + ' <br> ' + 'peso: ' + lista[i].peso + ' <br> ' + 'altura: ' + lista[i].altura + ' <br> ' + '-----------------------------------------------------------------------------<br>';
-            }
-            document.getElementById('outputSaida').innerHTML = string;
-        }
-        function alterar() {
-            let referencial = document.getElementById('inputReferencia').value;
-            let a1C = document.getElementById('inputnome').value;
-            let a2C = parseFloat(document.getElementById('inputidade').value);
-            let a3C = parseFloat(document.getElementById('inputpeso').value);
-            let a4C = parseFloat(document.getElementById('inputaltura').value);
-            if (a1C == '' || isNaN(a2C) || isNaN(a3C) || isNaN(a4C)) {
-                alert('insira todos os parametros');
-                return;
-            }
-            for (let i = 0; i < lista.length; i++) {
-                if (referencial == lista[i].CPF) {
-                    let itemQuestao = lista[i];
-                    itemQuestao.nome = a1C;
-                    itemQuestao.idade = a2C;
-                    itemQuestao.peso = a3C;
-                    itemQuestao.altura = a4C;
-                    break
-                }
-            }
-            exibirLista(lista);
-            zerar();
-            document.getElementById('btVoltar').style.display = 'none';
-            document.getElementById('divAviso').innerHTML = 'Produto Alterado';
-        }
-        function zerar() {
-            document.getElementById('inputnome').readOnly = true;
-            document.getElementById('inputnome').value = '';
-            document.getElementById('inputidade').readOnly = true;
-            document.getElementById('inputidade').value = '';
-            document.getElementById('inputpeso').readOnly = true;
-            document.getElementById('inputpeso').value = '';
-            document.getElementById('inputaltura').readOnly = true;
-            document.getElementById('inputaltura').value = '';
-            document.getElementById('inputReferencia').readOnly = false;
-            document.getElementById('inputReferencia').value = '';
-            document.getElementById('btProcure').style.display = 'inline';
-            document.getElementById('btExcluir').style.display = 'none';
-            document.getElementById('btAlterar').style.display = 'none';
-            document.getElementById('btInserir').style.display = 'none';
-        }
-        function excluir() {
-            let referencial = document.getElementById('inputReferencia').value;
-            if (referencial == '' || isNaN(referencial)) {
-                alert('coloque uma referencia valida');
-                return;
-            }
-            lista = fExcluir(referencial, lista);
-            exibirLista(lista);
-            zerar();
-            document.getElementById('btVoltar').style.display = 'inline';
-            document.getElementById('divAviso').innerHTML = 'Produto EXCLUIDO, clique VOLTAR para desfazer';
-            document.getElementById('btVoltar').value = 'Desfazer';
-        }
-        function fExcluir(referencial, lista) {
-            let newlista = [];
-            for (let i = 0; i < lista.length; i++) {
-                if (lista[i].CPF != referencial) {
-                    newlista.push(lista[i]);
+            HTML += "<input type='button' value='Procure' id='btProcure' onclick='procure()' style='display:inline;'>\n" +
+                "<input type='button' value='Inserir' id='btInserir' onclick='inserir()' style='display:none;'>\n" +
+                "<input type='button' value='Alterar' id='btAlterar' onclick='alterar()' style='display:none;'>\n" +
+                "<input type='button' value='Excluir' id='btExcluir' onclick='excluir()' style='display:none;'>\n" +
+                "<input type = 'button' value = 'Voltar' id = 'btVoltar' onclick = 'voltar()' style = 'display:none;' >\n" +
+
+                "<br><br>\n"
+
+            for (let i = 1; i < atributos.length; i++) {
+                if (atributos[i][0] == "float" || atributos[i][0] == "int") {
+                    HTML += "<label for='input" + atributos[i][1] + "'>" + atributos[i][1] + ":</label>\n" +
+                        "<input type='number' id='input" + atributos[i][1] + "' readonly='true'>\n" +
+                        "<br>\n"
                 } else {
-                    alterado = lista[i];
+                    HTML += "<label for='input" + atributos[i][1] + "'>" + atributos[i][1] + ":</label>\n" +
+                        "<input type='" + atributos[i][0] + "' id='input" + atributos[i][1] + "' readonly='true'>\n" +
+                        "<br>\n"
                 }
             }
-            return newlista;
-        }
-        function voltar() {
-            if (alterado != null) {
-                fInserir(alterado.CPF, alterado.nome, alterado.idade, alterado.peso, alterado.altura, lista);
-                document.getElementById('divAviso').innerHTML = 'Produto reenserido';
+            HTML += "<br>\n" +
+                "<br><br>\n" +
+                "<div id='divAviso' style='background-color: antiquewhite;'></div>\n" +
+                "<br><br>\n" +
+
+                "<div id='outputSaida' style='background-color: aqua;'>...</div>\n" +
+                "<input type='button' value='Persistir' id='btPersisitir' onclick='prepararESalvarCSV()'>\n" +
+                "<input type='button' value='Recuperar' id='btRecuperar' onclick='abrirArquivoSalvoEmLocalPermanente()'>\n" +
+                "<input type='button' value='Listar Lista Completa' id='btListar' onclick='listar()'>\n" +
+                "<script" +
+                " src='./classe" + nome + ".js'" +
+                "><\/script>\n" +
+                "<script" +
+                " src='./controle" + nome + ".js'" +
+                "><\/script>\n" +
+                "<\/body>\n" +
+                "<\/html>\n";
+
+            //parte classe 
+            let classe = "class " + nome + "{\n" +
+                "constructor(";
+            classe += atributos.map(a => a[1]).join(", ") + "){\n";
+            for (let i = 0; i < atributos.length; i++) {
+                classe += "this." + atributos[i][1] + " = " + atributos[i][1] + ";\n";
             }
-            exibirLista(lista);
-            zerar();
-            document.getElementById('btVoltar').style.display = 'none';
-            document.getElementById('btVoltar').value = 'Voltar';
-            alterado = null;
-        }
-        function persistirEmLocalPermanente(arquivoDestino, conteudo) {
-            const blob = new Blob([conteudo], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = arquivoDestino;
-            link.click();
-            URL.revokeObjectURL(link.href);
-        }
-        function abrirArquivoSalvoEmLocalPermanente() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.csv';
-            input.onchange = function (event) {
-                const arquivo = event.target.files[0];
-                if (arquivo) {
-                    converterDeCSVparaListaObjeto(arquivo);
+            classe += "}\n" +
+                "}\n"
+            //parte controle
+            let string = "let lista = [];\n" +
+                "let alterado = null;\n" +
+
+
+                "function procure() {\n"+
+                        "document.getElementById('btVoltar').style.display = 'none';\n"+
+            "document.getElementById('btVoltar').value = 'Voltar';\n";
+
+            if (atributos[0][0] == "float") {
+                string += "let " + referencial + " = parseFloat(document.getElementById('inputReferencia').value);\n"
+            } else if (atributos[0][0] == "int") {
+                string += "let " + referencial + " = parseInt(document.getElementById('inputReferencia').value);\n"
+            } else if (atributos[0][0] == "text") {
+                string += "let " + referencial + " = document.getElementById('inputReferencia').value;\n"
+            } else {
+                string += "let " + referencial + " = document.getElementById('inputReferencia').value;\n"
+            }
+            string += "let item = null;\n" +
+                "if ("
+            if (atributos[0][0] == "float" || atributos[0][0] == "int") {
+                string += "isNaN(" + referencial + ")) {\n"
+            } else {
+                string += referencial + " == '') {\n"
+            }
+            string += "alert('coloque uma referencia');\n" +
+                "return\n" +
+                "}\n" +
+                "document.getElementById('inputReferencia').readOnly = true;\n" +
+                "for (let i = 0; i < lista.length; i++) {\n" +
+                "if (lista[i]." + referencial + " == " + referencial + ") {\n" +
+                "item = lista[i];\n";
+            for (let i = 1; i < atributos.length; i++) {
+                string += "document.getElementById('input" + atributos[i][1] + "').value = item." + atributos[i][1] + ";\n";
+            }
+
+            string += "document.getElementById('divAviso').innerHTML = 'Produto encontrado, clique Alterar para alterar';\n" +
+                "document.getElementById('btAlterar').style.display = 'inline';\n" +
+                "document.getElementById('btExcluir').style.display = 'inline';\n" +
+                "break\n" +
+                "}\n" +
+
+                "}\n" +
+                "if (item == null) {\n" +
+                "document.getElementById('divAviso').innerHTML = 'Produto nao encontrado, clique inserir para adicionar';\n" +
+                "document.getElementById('btInserir').style.display = 'inline';\n" +
+                "}\n" +
+
+                "item = null;\n" +
+                "document.getElementById('btProcure').style.display = 'none';\n";
+            for (let i = 1; i < atributos.length; i++) {
+                string += "document.getElementById('input" + atributos[i][1] + "').readOnly = false;\n";
+            }
+            string += "document.getElementById('btVoltar').style.display = 'inline';\n" +
+
+
+                "}\n" +
+
+                "function inserir() {\n" +
+                "let referencial = document.getElementById('inputReferencia').value;\n";
+
+
+
+            for (let i = 1; i < atributos.length; i++) {
+                if (atributos[i][0] == "float") {
+                    string += "let a" + i + "C = parseFloat(document.getElementById('input" + atributos[i][1] + "').value);\n"
+                } else if (atributos[i][0] == "int") {
+                    string += "let a" + i + "C = parseInt(document.getElementById('input" + atributos[i][1] + "').value);\n"
+                } else if (atributos[i][0] == "text") {
+                    string += "let a" + i + "C = document.getElementById('input" + atributos[i][1] + "').value;\n"
+                } else {
+                    string += "let a" + i + "C = document.getElementById('input" + atributos[i][1] + "').value;\n"
+                    alert("aviso, tem classes sem text ou number");
+
                 }
-            };
-            input.click();
-        }
-        function prepararESalvarCSV() {
-            let nomeDoArquivoDestino = 'Pessoas.csv';
-            let textoCSV = '';
-            for (let i = 0; i < lista.length; i++) {
-                const linha = lista[i];
-                textoCSV += linha.CPF + ';' + linha.nome + ';' + linha.idade + ';' + linha.peso + ';' + linha.altura + '\n';
             }
-            persistirEmLocalPermanente(nomeDoArquivoDestino, textoCSV);
-        }
-        function converterDeCSVparaListaObjeto(arquivo) {
-            const leitor = new FileReader();
-            leitor.onload = function (e) {
-                const conteudo = e.target.result;
-                const linhas = conteudo.split('\n');
-                lista = [];
-                for (let i = 0; i < linhas.length; i++) {
-                    const linha = linhas[i].trim();
-                    if (linha) {
-                        const dados = linha.split(';');
-                        let novoPessoas = new Pessoas(
-                            parseFloat(dados[0]),
-                            dados[1],
-                            parseFloat(dados[2]),
-                            parseFloat(dados[3]),
-                            parseFloat(dados[4]),
-                        );
-                        lista.push(novoPessoas);
+            let condicoes = [];
+
+            if (atributos[0][0] == "float" || atributos[0][0] == "int") {
+                condicoes.push("referencial == '' || isNaN(referencial)");
+            } else if (atributos[0][0] == "text") {
+                condicoes.push("referencial == ''");
+            } else {
+                condicoes.push("referencial == ''");
+                alert("erro, coloque number ou text para o referencial");
+            }
+
+            for (let i = 1; i < atributos.length; i++) {
+                if (atributos[i][0] == "float" || atributos[i][0] == "int") {
+                    condicoes.push("isNaN(a" + i + "C)");
+                } else if (atributos[i][0] == "text") {
+                    condicoes.push("a" + i + "C == ''");
+                } else {
+                    condicoes.push("a" + i + "C == ''");
+                }
+            }
+
+            string += "if (" + condicoes.join(" || ") + ") {\n" +
+                "alert('insira todos os parametros');\n" +
+                "return;\n" +
+                "}\n" +
+                "fInserir(referencial,";
+            for (let i = 1; i < atributos.length; i++) {
+                string += " a" + i + "C,"
+            }
+            string += " lista)\n" +
+                "document.getElementById('divAviso').innerHTML = 'Produto adicionado';\n" +
+                "exibirLista(lista);\n" +
+                "zerar();\n" +
+                "document.getElementById('btVoltar').style.display = 'none';\n" +
+
+                "}\n" +
+                "function fInserir(referencial,"
+            for (let i = 1; i < atributos.length; i++) {
+                string += " a" + i + "C,"
+            }
+            string += " lista) {\n" +
+                "let itens = new " + nome + "(referencial,"
+            for (let i = 1; i < atributos.length; i++) {
+                string += " a" + i + "C,"
+            }
+            string += ");\n" +
+                "lista.push(itens);\n" +
+
+                "}\n" +
+                "function exibirLista(lista) {\n" +
+                "let string = '';\n" +
+                "document.getElementById('outputSaida').innerHTML = '';\n" +
+                "for (let i = 0; i < lista.length; i++) {\n"
+            string += "string += " +
+                atributos.map(a =>
+                    "'" + a[1] + ": ' + lista[i]." + a[1] + " + ' <br> '"
+                ).join(" + ") +
+                " + '-----------------------------------------------------------------------------<br>';\n" +
+                "}\n" +
+                "document.getElementById('outputSaida').innerHTML = string;\n" +
+                "}\n" +
+
+                "function alterar() {\n" +
+                "let referencial = document.getElementById('inputReferencia').value;\n"
+            for (let i = 1; i < atributos.length; i++) {
+                if (atributos[i][0] == "float") {
+                    string += "let a" + i + "C = parseFloat(document.getElementById('input" + atributos[i][1] + "').value);\n"
+                } else if (atributos[i][0] == "int") {
+                    string += "let a" + i + "C = parseInt(document.getElementById('input" + atributos[i][1] + "').value);\n"
+                } else if (atributos[i][0] == "text") {
+                    string += "let a" + i + "C = document.getElementById('input" + atributos[i][1] + "').value;\n"
+                } else {
+                    string += "let a" + i + "C = document.getElementById('input" + atributos[i][1] + "').value;\n"
+                }
+            }
+            if (atributos.length > 1) {
+                let condicoesAlterar = [];
+
+                for (let i = 1; i < atributos.length; i++) {
+                    if (atributos[i][0] == "float" || atributos[i][0] == "int") {
+                        condicoesAlterar.push("isNaN(a" + i + "C)");
+                    } else if (atributos[i][0] == "text") {
+                        condicoesAlterar.push("a" + i + "C == ''");
+                    } else {
+                        condicoesAlterar.push("a" + i + "C == ''");
                     }
                 }
-                exibirLista(lista);
-                document.getElementById('divAviso').innerHTML = 'Arquivo carregado com sucesso!';
-            };
-            leitor.readAsText(arquivo);
-        }
 
+                string += "if (" + condicoesAlterar.join(" || ") + ") {\n" +
+                    "alert('insira todos os parametros');\n" +
+                    "return;\n" +
+                    "}\n";
+            }
+            string += "for (let i = 0; i < lista.length; i++) {\n" +
+                "if (referencial == lista[i]." + referencial + ") {\n" +
+                "let itemQuestao = lista[i];\n"
+            for (let i = 1; i < atributos.length; i++) {
+                string += "itemQuestao." + atributos[i][1] + " = a" + i + "C;\n";
+            }
+
+            string += "break\n" +
+                "}\n" +
+                "}\n" +
+                "exibirLista(lista);\n" +
+                "zerar();\n" +
+                "document.getElementById('btVoltar').style.display = 'none';\n" +
+                "document.getElementById('divAviso').innerHTML = 'Produto Alterado';\n" +
+
+                "}\n" +
+
+                "function zerar() {\n";
+            for (let i = 1; i < atributos.length; i++) {
+                string += "document.getElementById('input" + atributos[i][1] + "').readOnly = true;\n" +
+                    "document.getElementById('input" + atributos[i][1] + "').value = '';\n";
+            }
+
+
+            string += "document.getElementById('inputReferencia').readOnly = false;\n" +
+                "document.getElementById('inputReferencia').value = '';\n" +
+                "document.getElementById('btProcure').style.display = 'inline';\n" +
+                "document.getElementById('btExcluir').style.display = 'none';\n" +
+                "document.getElementById('btAlterar').style.display = 'none';\n" +
+                "document.getElementById('btInserir').style.display = 'none';\n" +
+
+
+                "}\n" +
+
+                "function excluir() {\n" +
+                "let referencial = document.getElementById('inputReferencia').value;\n";
+            if (atributos[0][0] == "float" || atributos[0][0] == "int") {
+                string += "if (referencial == '' || isNaN(referencial)) {\n";
+            } else if (atributos[0][0] == "text") {
+                string += "if (referencial == '') {\n";
+            } else {
+                string += "if (referencial == '') {\n";
+            }
+
+            string += "alert('coloque uma referencia valida');\n" +
+                "return;\n" +
+                "}\n" +
+                "lista = fExcluir(referencial, lista);\n" +
+                "exibirLista(lista);\n" +
+                "zerar();\n" +
+                "document.getElementById('btVoltar').style.display = 'inline';\n" +
+                "document.getElementById('divAviso').innerHTML = 'Produto EXCLUIDO, clique VOLTAR para desfazer';\n" +
+                "document.getElementById('btVoltar').value = 'Desfazer';\n" +
+
+                "}\n" +
+                "function fExcluir(referencial, lista) {\n" +
+                "let newlista = [];\n" +
+                "for (let i = 0; i < lista.length; i++) {\n" +
+                "if (lista[i]." + referencial + " != referencial) {\n" +
+                "newlista.push(lista[i]);\n" +
+                "} else {\n" +
+                "alterado = lista[i];\n" +
+                "}\n" +
+                "}\n" +
+                "return newlista;\n" +
+                "}\n" +
+
+                "function voltar() {\n" +
+                "if(alterado != null){\n" +
+                "fInserir(";
+            for (let i = 0; i < atributos.length; i++) {
+                string += " alterado." + atributos[i][1] + ",";
+            }
+
+            string += " lista);\n" +
+                "document.getElementById('divAviso').innerHTML = 'Produto reenserido';\n" +
+
+                "}\n" +
+                "exibirLista(lista);\n" +
+                "zerar();\n" +
+                "document.getElementById('btVoltar').style.display = 'none';\n" +
+                "document.getElementById('btVoltar').value = 'Voltar';\n" +
+
+                "alterado = null;\n" +
+                "}\n" +
+                "function persistirEmLocalPermanente(arquivoDestino, conteudo) {\n" +
+                "const blob = new Blob([conteudo], { type: 'text/plain' }); \n" +
+                "const link = document.createElement('a');\n" +
+                "link.href = URL.createObjectURL(blob);\n" +
+                "link.download = arquivoDestino;\n" +
+                "link.click();\n" +
+                "URL.revokeObjectURL(link.href);\n" +
+                "}\n" +
+
+                "function abrirArquivoSalvoEmLocalPermanente() {\n" +
+
+                "const input = document.createElement('input');\n" +
+                "input.type = 'file';\n" +
+                "input.accept = '.csv';\n" +
+                "input.onchange = function (event) {\n" +
+                "const arquivo = event.target.files[0];\n" +
+                "if (arquivo) {\n" +
+                "converterDeCSVparaListaObjeto(arquivo);\n" +
+                "}\n" +
+                "};\n" +
+                "input.click();\n" +
+                "}\n" +
+
+                "function prepararESalvarCSV() {\n" +
+                "let nomeDoArquivoDestino = '" + nome + ".csv';\n" +
+                "let textoCSV = '';\n" +
+                "for (let i = 0; i < lista.length; i++) {\n" +
+                "const linha = lista[i];\n" +
+                "textoCSV +=  linha."
+            let arrayAux = [];
+            for (let i = 0; i < atributos.length; i++) {
+                arrayAux.push(atributos[i][1]);
+            }
+            arrayAux = arrayAux.join("+ ';' + linha.");
+            string += arrayAux
+            string += " + '\\n';\n" +
+                "}\n" +
+                "persistirEmLocalPermanente(nomeDoArquivoDestino, textoCSV);\n" +
+                "}\n" +
+
+                "function converterDeCSVparaListaObjeto(arquivo) {\n" +
+                "const leitor = new FileReader();\n" +
+                "leitor.onload = function (e) {\n" +
+                "const conteudo = e.target.result; \n" +
+                "const linhas = conteudo.split('\\n');\n" +
+                "lista = [];\n" +
+
+                "for (let i = 0; i < linhas.length; i++) {\n" +
+                "const linha = linhas[i].trim();\n" +
+                "if (linha) {\n" +
+                "const dados = linha.split(';');\n" +
+                "let novo" + nome + " = new " + nome + "(\n"
+            for (let i = 0; i < atributos.length; i++) {
+                if (atributos[i][0] == "float") {
+                    string += "parseFloat(dados[" + i + "]),\n"
+                } else if (atributos[i][0] == "int") {
+                    string += "parseInt(dados[" + i + "]),\n"
+                } else if (atributos[i][0] == "text") {
+                    string += "dados[" + i + "],\n"
+                } else {
+                    string += "dados[" + i + "],\n"
+                }
+            }
+            string += ");\n" +
+                "lista.push(novo" + nome + ");\n" +
+                "}\n" +
+                "}\n" +
+                "exibirLista(lista);\n" +
+                "document.getElementById('divAviso').innerHTML = 'Arquivo carregado com sucesso!';\n" +
+                "};\n" +
+                "leitor.readAsText(arquivo);\n" +
+                "}\n" +
+                "function listar(){\n" +
+                "exibirLista(lista);\n" +
+                "}\n"
+
+            document.getElementById("saidaControle").value = string;
+            document.getElementById("saidaHTML").value = HTML;
+            document.getElementById("saidaClasse").value = classe;
+
+        }
     </script>
 </body>
 
