@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEM CACHE NO PLANETA | Consumismo, Resíduos e Clima — UTFPR Campo Mourão</title>
+  <meta name="description" content="Plataforma interativa de conscientização sobre consumismo, geração de resíduos e mudanças climáticas desenvolvida por estudantes de Informática para Internet da UTFPR – Campus Campo Mourão." />
+
+  <!-- Diretivas de Segurança (CSP Estrita sem unsafe-inline, Referrer Policy e No-Sniff) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';" />
+  <meta name="referrer" content="no-referrer" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Folha de Estilos Modular -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Barra de Progresso de Leitura -->
+  <div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#topo" class="brand" aria-label="Início - Sem Cache no Planeta">
+        <span class="brand-icon">&lt;/&gt;</span>
+        <div class="brand-text">
+          <span>SEM CACHE NO PLANETA</span>
+          <small>UTFPR • CAMPO MOURÃO</small>
+        </div>
+      </a>
+
+      <nav aria-label="Navegação Principal">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#dados" data-nav="dados">Dados</a></li>
+          <li><a href="#clima" data-nav="clima">Clima</a></li>
+          <li><a href="#raio-x" data-nav="raio-x">Raio-X do Lixo</a></li>
+          <li><a href="#calculadora" data-nav="calculadora">Calculadora</a></li>
+          <li><a href="#solucoes" data-nav="solucoes">5 Rs</a></li>
+          <li><a href="#quiz" data-nav="quiz">Quiz</a></li>
+          <li><a href="#formulario" data-nav="formulario">Formulário</a></li>
+          <li><a href="#mural" data-nav="mural" class="nav-cta">Compromisso</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-controls">
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Ativar modo claro" aria-pressed="false" title="Ativar modo claro">
+          <svg id="themeIconSun" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="themeIconMoon" class="hidden" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. HERO SECTION -->
+  <section class="hero" id="topo">
+    <div class="hero-grid-bg" aria-hidden="true"></div>
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="campus-pill">
+          <span class="pulse-dot"></span>
+          <span>Geografia I • Informática para Internet • UTFPR-CM</span>
+        </div>
+
+        <h1>SEM <span>CACHE</span> NO PLANETA</h1>
+        <p class="hero-slogan">// O planeta não tem lixeira infinita — nem botão de Ctrl+Z.</p>
+        <p class="hero-desc">
+          Cada copo descartável no bebedouro, embalagem de delivery ou compra por impulso em promoções online carrega uma cadeia invisível de extração, energia e emissões de gases de efeito estufa. Descubra como nossos hábitos de consumo alimentam a crise climática e como hackear essa rotina na <strong>UTFPR – Campus Campo Mourão</strong>.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#calculadora" class="btn btn-primary">
+            Calcular meu impacto
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+          <a href="#quiz" class="btn btn-secondary">Fazer Quiz Diagnóstico</a>
+          <a href="#interativos" class="btn btn-secondary">Ir para os interativos ↓</a>
+        </div>
+
+        <div class="hero-mini-metrics">
+          <div>
+            <strong>1,04 kg/dia</strong>
+            <span>Média de lixo por brasileiro</span>
+          </div>
+          <div class="divider-v"></div>
+          <div>
+            <strong>&lt; 8%</strong>
+            <span>Efetivamente reciclado no país</span>
+          </div>
+          <div class="divider-v"></div>
+          <div>
+            <strong>28x mais</strong>
+            <span>Potência térmica do Metano (CH₄)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Painel Diagnóstico em Tempo Real -->
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <div class="window-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="terminal-title">monitor_climatico.sh — utfpr-cm</span>
+          <span class="status-live">AO VIVO</span>
+        </div>
+
+        <div class="terminal-body">
+          <div class="terminal-line">
+            <span class="prompt">$</span> ./analisar_consumo --campus="Campo Mourao"
+          </div>
+          <div class="terminal-line">
+            &gt; Fluxo linear detectado: <strong>Extrair → Produzir → Usar 5min → Descartar</strong>
+          </div>
+          <div class="terminal-line">
+            &gt; Gás crítico em aterros: <span class="warn">Metano (CH₄) + Dióxido de Carbono (CO₂)</span>
+          </div>
+          <div class="terminal-line">
+            &gt; Falha crítica: <span class="danger-txt">Reciclagem isolada não compensa o hiperconsumo.</span>
+          </div>
+          <div class="terminal-line">
+            &gt; Patch recomendado: <strong>[Repensar, Recusar, Reduzir, Reutilizar]</strong>
+          </div>
+
+          <div class="storage-bar-wrap">
+            <div class="storage-label">
+              <span>SATURAÇÃO DE ATERROS &amp; ORÇAMENTO CLIMÁTICO</span>
+              <span>89% CRÍTICO</span>
+            </div>
+            <div class="storage-track">
+              <div class="storage-fill"></div>
+            </div>
+          </div>
+
+          <div class="terminal-footer-actions">
+            <a href="#mural" class="terminal-link">→ Assinar compromisso ambiental do campus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. SEÇÃO 1 – O PROBLEMA EM DADOS -->
+  <section id="dados">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">01 // O Problema em Dados</span>
+        <h2>Quanto lixo produzimos em função dos nossos <span class="highlight-emerald">hábitos de consumo</span>?</h2>
+        <p>
+          O modelo consumista transforma recursos finitos em resíduos descartáveis em velocidade recorde. Os números mostram que o "jogar fora" não existe — tudo permanece no planeta.
+        </p>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card reveal">
+          <div>
+            <div class="stat-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18"></path>
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+              </svg>
+            </div>
+            <div class="stat-number">380 kg</div>
+            <div class="stat-label">Lixo por brasileiro ao ano</div>
+            <p class="stat-desc">
+              Cada habitante gera em média <strong>1,04 kg de resíduos sólidos urbanos por dia</strong>. No Brasil, são mais de 81 milhões de toneladas descartadas anualmente.
+            </p>
+          </div>
+          <div class="stat-source">Fonte: Panorama dos Resíduos Sólidos (ABREMA)</div>
+        </article>
+
+        <article class="stat-card alert reveal">
+          <div>
+            <div class="stat-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </div>
+            <div class="stat-number">2,1 Bi t</div>
+            <div class="stat-label">Resíduos globais por ano</div>
+            <p class="stat-desc">
+              A humanidade produz mais de <strong>2,1 bilhões de toneladas</strong> de lixo urbano por ano — volume projetado para saltar a 3,8 bilhões até 2050 sem mudanças no consumo.
+            </p>
+          </div>
+          <div class="stat-source">Fonte: ONU / PNUMA (Global Waste Outlook)</div>
+        </article>
+
+        <article class="stat-card alert reveal">
+          <div>
+            <div class="stat-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div class="stat-number">&lt; 8%</div>
+            <div class="stat-label">Efetivamente reciclado no Brasil</div>
+            <p class="stat-desc">
+              Mais de 92% de tudo o que descartamos vai para aterros sanitários, lixões irregulares ou rios e oceanos — perdendo valor material e contaminando ecossistemas.
+            </p>
+          </div>
+          <div class="stat-source">Fonte: ABREMA / SNIS</div>
+        </article>
+
+        <article class="stat-card reveal">
+          <div>
+            <div class="stat-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="stat-number">+400 anos</div>
+            <div class="stat-label">Degradação de um copo plástico</div>
+            <p class="stat-desc">
+              Usado por menos de 3 minutos entre uma aula e outra, o copo descartável permanece séculos no ambiente fragmentando-se em microplásticos.
+            </p>
+          </div>
+          <div class="stat-source">Fonte: Ministério do Meio Ambiente / PNUMA</div>
+        </article>
+      </div>
+
+      <!-- Visualização Comparativa de Destino dos Resíduos -->
+      <div class="visual-comparison-box reveal">
+        <div class="vc-header">
+          <div>
+            <h3>Para onde vai o lixo gerado no Brasil?</h3>
+            <p>Proporção aproximada do destino final dos resíduos sólidos urbanos coletados</p>
+          </div>
+          <span class="badge-mono">REALIDADE NACIONAL</span>
+        </div>
+
+        <div class="stacked-bar-container" role="img" aria-label="Gráfico: 61% aterros sanitários, 31% lixões e aterros controlados, apenas 8% reciclados">
+          <div class="stacked-segment seg-landfill">
+            <span>61% Aterros Sanitários</span>
+          </div>
+          <div class="stacked-segment seg-dump">
+            <span>31% Lixões / Inadequado</span>
+          </div>
+          <div class="stacked-segment seg-recycled">
+            <span>8%</span>
+          </div>
+        </div>
+
+        <div class="stacked-legend">
+          <div class="legend-item"><span class="dot dot-landfill"></span> Aterros sanitários (geram metano CH₄ por décadas)</div>
+          <div class="legend-item"><span class="dot dot-dump"></span> Descarte inadequado / lixões (poluição direta de solo, rios e ar)</div>
+          <div class="legend-item"><span class="dot dot-recycled"></span> Efetivamente reciclado (&lt; 8% do total)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SEÇÃO 2 – CONEXÃO COM O CLIMA -->
+  <section class="alt-section" id="clima">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag amber">02 // Conexão com o Clima</span>
+        <h2>Qual é a relação entre <span class="highlight-amber">consumismo, resíduos</span> e mudanças climáticas?</h2>
+        <p>
+          Cada objeto descartado possui uma "pegada oculta": ele aquece o planeta tanto antes de chegar às nossas mãos quanto depois de ir para a lixeira.
+        </p>
+      </div>
+
+      <div class="chain-grid">
+        <div class="chain-step reveal">
+          <span class="step-badge">01 • EXTRAÇÃO</span>
+          <h3>Retirada da Natureza</h3>
+          <p>
+            Fabricar plásticos (derivados do petróleo), metais, papel e tecidos exige mineração, perfuração fóssil e desmatamento — destruindo florestas que capturam carbono.
+          </p>
+        </div>
+
+        <div class="chain-step reveal">
+          <span class="step-badge">02 • PRODUÇÃO</span>
+          <h3>Indústria, Água e Energia</h3>
+          <p>
+            Fábricas consomem enormes volumes de eletricidade, água doce e calor industrial para transformar matéria-prima bruta em embalagens e produtos de vida curta.
+          </p>
+        </div>
+
+        <div class="chain-step reveal">
+          <span class="step-badge">03 • LOGÍSTICA</span>
+          <h3>Transporte Global e Local</h3>
+          <p>
+            Navios cargueiros, caminhões e entregas de e-commerce/delivery queimam combustíveis fósseis continuamente, liberando toneladas de <strong>Dióxido de Carbono (CO₂)</strong>.
+          </p>
+        </div>
+
+        <div class="chain-step reveal">
+          <span class="step-badge">04 • DESCARTE</span>
+          <h3>Decomposição e Metano</h3>
+          <p>
+            Nos aterros e lixões, o lixo soterrado sem oxigênio fermenta e emite <strong>Gás Metano (CH₄)</strong> e <strong>CO₂</strong>, intensificando diretamente o efeito estufa.
+          </p>
+        </div>
+      </div>
+
+      <!-- Comparativo Visual CO2 vs Metano -->
+      <div class="ghg-card reveal">
+        <div class="ghg-info">
+          <div class="ghg-title-row">
+            <span class="ghg-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+              </svg>
+            </span>
+            <h3>O efeito estufa invisível dos aterros: CO₂ vs. Metano (CH₄)</h3>
+          </div>
+          <p>
+            Segundo o <strong>IPCC</strong>, o gás metano emitido pela decomposição de resíduos orgânicos e misturados em aterros retém <strong>28 vezes mais calor que o CO₂</strong> em uma escala de 100 anos (e até 80x nos primeiros 20 anos). Além disso, a queima irregular de lixo libera carbono negro e gases tóxicos que agravam eventos climáticos extremos.
+          </p>
+        </div>
+
+        <div class="ghg-bars">
+          <div class="ghg-bar-item">
+            <div class="ghg-bar-label">
+              <span>Dióxido de Carbono (CO₂) — Referência</span>
+              <strong>1x</strong>
+            </div>
+            <div class="ghg-track">
+              <div class="ghg-fill co2"></div>
+            </div>
+          </div>
+
+          <div class="ghg-bar-item">
+            <div class="ghg-bar-label">
+              <span>Gás Metano (CH₄) dos Resíduos (100 anos)</span>
+              <strong class="highlight-amber">28x mais potente</strong>
+            </div>
+            <div class="ghg-track">
+              <div class="ghg-fill ch4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SEÇÃO 3 – O MITO DA RECICLAGEM + RAIO-X INTERATIVO -->
+  <section id="raio-x">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">03 // O Mito da Reciclagem</span>
+        <h2>Por que <span class="highlight-emerald">reciclar não é suficiente</span> para resolver o problema?</h2>
+        <p>
+          Reciclar é necessário, mas não pode ser usado como desculpa para consumir sem freio. A reciclagem atua apenas no final da cadeia e enfrenta limites físicos, econômicos e energéticos.
+        </p>
+      </div>
+
+      <div class="myth-grid">
+        <div class="myth-card reveal">
+          <h3>01. Baixa escala e contaminação</h3>
+          <p>
+            Menos de 8% dos resíduos são reciclados no Brasil. Quando embalagens plásticas ou papéis se misturam a restos de comida no lixo comum, perdem valor e viram rejeito.
+          </p>
+        </div>
+
+        <div class="myth-card reveal">
+          <h3>02. Downcycling (perda de qualidade)</h3>
+          <p>
+            Diferente do alumínio, o plástico degrada suas cadeias poliméricas a cada derretimento: geralmente só pode ser reciclado <strong>1 ou 2 vezes</strong> antes de ser descartado definitivamente.
+          </p>
+        </div>
+
+        <div class="myth-card reveal">
+          <h3>03. Alto gasto de água e energia</h3>
+          <p>
+            Coletar, transportar, lavar, triturar e reprocessar materiais também consome energia elétrica, água tratada e combustíveis fósseis.
+          </p>
+        </div>
+
+        <div class="myth-card reveal">
+          <h3>04. Não reduz a extração na fonte</h3>
+          <p>
+            Se o consumo cresce mais rápido que a capacidade de reaproveitamento, a indústria continua extraindo petróleo, minérios e celulose virgens em ritmo insustentável.
+          </p>
+        </div>
+      </div>
+
+      <!-- SIMULADOR INTERATIVO: RAIO-X DO COTIDIANO -->
+      <div class="xray-panel reveal">
+        <div class="xray-header">
+          <span class="section-tag amber u-mb-sm">SIMULADOR INTERATIVO</span>
+          <h3>Raio-X dos Resíduos no Cotidiano Estudantil</h3>
+          <p>Clique em um item comum na rotina da UTFPR para inspecionar seu tempo de uso, impacto climático e por que apenas reciclar não basta:</p>
+        </div>
+
+        <div class="xray-tabs" role="tablist" aria-label="Itens do cotidiano para inspeção">
+          <button class="xray-tab active" type="button" data-item="copo" role="tab" aria-selected="true">🥤 Copo Descartável</button>
+          <button class="xray-tab" type="button" data-item="delivery" role="tab" aria-selected="false">🥡 Embalagem Delivery</button>
+          <button class="xray-tab" type="button" data-item="fastfashion" role="tab" aria-selected="false">👕 Roupa Fast Fashion</button>
+          <button class="xray-tab" type="button" data-item="papel" role="tab" aria-selected="false">📄 Apostila Impressa</button>
+          <button class="xray-tab" type="button" data-item="cabo" role="tab" aria-selected="false">🔌 Cabo / Fone Barato</button>
+        </div>
+
+        <div class="xray-content" id="xrayDisplay">
+          <!-- Preenchido via DOM seguro em app.js -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SEÇÃO 4 – CALCULADORA INTERATIVA DE IMPACTO NO CAMPUS -->
+  <section class="alt-section" id="calculadora">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag amber">04 // Simulador Pessoal</span>
+        <h2>Calculadora de <span class="highlight-amber">Resíduos &amp; Carbono</span> do Estudante</h2>
+        <p>
+          Ajuste os controles abaixo de acordo com a sua rotina semanal na UTFPR e veja quanto lixo, carbono e dinheiro você acumula em 1 ano.
+        </p>
+      </div>
+
+      <div class="calc-grid reveal">
+        <!-- Controles -->
+        <div class="calc-controls">
+          <div class="slider-group">
+            <div class="slider-top">
+              <label for="cupsInput">Copos plásticos descartáveis por dia útil</label>
+              <span class="slider-val" id="cupsVal">3 copos/dia</span>
+            </div>
+            <input type="range" id="cupsInput" min="0" max="10" value="3" />
+            <small>Considerando ~200 dias letivos no ano na UTFPR</small>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-top">
+              <label for="deliveryInput">Pedidos de delivery / lanches embalados por semana</label>
+              <span class="slider-val" id="deliveryVal">2 pedidos/sem</span>
+            </div>
+            <input type="range" id="deliveryInput" min="0" max="10" value="2" />
+            <small>Inclui embalagens plásticas/isopor, sacolas e talheres descartáveis</small>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-top">
+              <label for="impulseInput">Compras online não essenciais por mês</label>
+              <span class="slider-val" id="impulseVal">2 compras/mês</span>
+            </div>
+            <input type="range" id="impulseInput" min="0" max="10" value="2" />
+            <small>Roupas rápidas, acessórios e encomendas com frete + caixas/plástico-bolha</small>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-top">
+              <label for="bottlesInput">Garrafas PET / latas de bebidas por semana</label>
+              <span class="slider-val" id="bottlesVal">3 unid/sem</span>
+            </div>
+            <input type="range" id="bottlesInput" min="0" max="14" value="3" />
+            <small>Refrigerantes, sucos industrializados ou água engarrafada</small>
+          </div>
+        </div>
+
+        <!-- Resultados em Tempo Real -->
+        <div class="calc-results">
+          <div class="calc-res-header">
+            <span class="badge-mono">PROJEÇÃO ANUAL (12 MESES)</span>
+            <h3>Seu impacto estimado:</h3>
+          </div>
+
+          <div class="calc-metrics">
+            <div class="calc-metric-card">
+              <span class="cm-label">Resíduos Evitáveis Gerados</span>
+              <strong class="cm-value highlight-amber" id="resWasteKg">28,4 kg</strong>
+              <small id="resCupsCount">600 copos plásticos/ano</small>
+            </div>
+
+            <div class="calc-metric-card">
+              <span class="cm-label">Emissões Associadas (CO₂e)</span>
+              <strong class="cm-value highlight-emerald" id="resCo2Kg">118,5 kg</strong>
+              <small id="resKmCar">Equivale a ~590 km rodados de carro</small>
+            </div>
+
+            <div class="calc-metric-card full">
+              <span class="cm-label">Economia Potencial no seu Bolso (se reduzir pela metade)</span>
+              <strong class="cm-value" id="resMoneySaved">R$ 1.140,00 / ano</strong>
+              <small>Dinheiro que deixa de ir para embalagens descartáveis e compras por impulso</small>
+            </div>
+          </div>
+
+          <div class="calc-tip-box" id="calcDynamicTip">
+            Dica: Trocar os copos descartáveis por uma garrafa reutilizável na mochila já elimina 100% dos copos calculados acima.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. SEÇÃO 5 – HIERARQUIA DOS 5 RS & COTIDIANO UTFPR -->
+  <section id="solucoes">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">05 // A Hierarquia da Mudança</span>
+        <h2>Por que <span class="highlight-emerald">reduzir e reutilizar</span> vêm antes de descartar?</h2>
+        <p>
+          O resíduo mais sustentável é aquele que nunca precisou ser fabricado. Veja como inverter a lógica do descarte aplicando os 5 Rs na rotina da <strong>UTFPR – Campus Campo Mourão</strong>.
+        </p>
+      </div>
+
+      <div class="hierarchy-layout">
+        <!-- Pirâmide dos 5 Rs -->
+        <div class="pyramid-box reveal">
+          <span class="pyramid-title">ORDEM DE PRIORIDADE AMBIENTAL</span>
+          
+          <div class="pyramid-tier tier-1">
+            1. REPENSAR
+            <small>Questionar: "Eu realmente preciso comprar isso agora?"</small>
+          </div>
+          <div class="pyramid-tier tier-2">
+            2. RECUSAR
+            <small>Dizer não a sacolas, talheres plásticos e brindes descartáveis</small>
+          </div>
+          <div class="pyramid-tier tier-3">
+            3. REDUZIR
+            <small>Diminuir o volume de consumo e evitar embalagens excessivas</small>
+          </div>
+          <div class="pyramid-tier tier-4">
+            4. REUTILIZAR
+            <small>Dar novo uso, consertar, trocar e usar itens duráveis</small>
+          </div>
+          <div class="pyramid-tier tier-5">
+            5. RECICLAR
+            <small>Última etapa: apenas para o que não pôde ser evitado</small>
+          </div>
+        </div>
+
+        <!-- Trocas Práticas no Campus -->
+        <div class="campus-examples reveal">
+          <div class="example-card">
+            <div class="example-bad">
+              <span>❌</span>
+              <span><strong>Hábito comum:</strong> Pegar vários copos descartáveis por dia nos bebedouros dos blocos e na cantina.</span>
+            </div>
+            <div class="example-good">
+              <span>✅</span>
+              <span><strong>Alternativa UTFPR:</strong> Levar garrafa ou caneca reutilizável na mochila — evita até 600 copos/ano por estudante.</span>
+            </div>
+          </div>
+
+          <div class="example-card">
+            <div class="example-bad">
+              <span>❌</span>
+              <span><strong>Hábito comum:</strong> Pedir marmitas e lanches com talheres plásticos, sachês e sacolas duplas sem necessidade.</span>
+            </div>
+            <div class="example-good">
+              <span>✅</span>
+              <span><strong>Alternativa UTFPR:</strong> Marcar "não enviar descartáveis" nos apps, priorizar o RU e usar potes reutilizáveis.</span>
+            </div>
+          </div>
+
+          <div class="example-card">
+            <div class="example-bad">
+              <span>❌</span>
+              <span><strong>Hábito comum:</strong> Comprar roupas e eletrônicos baratos por impulso em promoções relâmpago na internet.</span>
+            </div>
+            <div class="example-good">
+              <span>✅</span>
+              <span><strong>Alternativa UTFPR:</strong> Adotar a "regra das 72 horas" antes de fechar o carrinho e promover feiras de troca/escambo no campus.</span>
+            </div>
+          </div>
+
+          <div class="example-card">
+            <div class="example-bad">
+              <span>❌</span>
+              <span><strong>Hábito comum:</strong> Imprimir listas de exercícios, slides e códigos para usar uma única vez e descartar.</span>
+            </div>
+            <div class="example-good">
+              <span>✅</span>
+              <span><strong>Alternativa UTFPR:</strong> Estudar por PDFs organizados no computador/celular e reaproveitar versos de folhas como rascunho.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Perguntas Orientadoras da Campanha (Acordeão Interativo) -->
+      <div class="faq-wrapper reveal">
+        <h3 class="faq-heading">As 5 Questões-Chave da Nossa Campanha</h3>
+        <div class="accordion" id="campaignAccordion">
+          <div class="acc-item">
+            <button class="acc-trigger" type="button" aria-expanded="false">
+              <span>1. Qual é a relação direta entre consumismo e mudanças climáticas?</span>
+              <span class="acc-icon">+</span>
+            </button>
+            <div class="acc-panel">
+              <p>O consumismo exige extração contínua de matérias-primas, uso intensivo de energia fóssil nas indústrias e transporte global de mercadorias (emissão de CO₂). Além disso, o descarte acelerado em aterros sanitários e lixões gera gás metano (CH₄), um potente gás de efeito estufa que acelera o aquecimento global.</p>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-trigger" type="button" aria-expanded="false">
+              <span>2. Quais impactos ambientais estão associados à geração excessiva de resíduos?</span>
+              <span class="acc-icon">+</span>
+            </button>
+            <div class="acc-panel">
+              <p>Além das emissões de gases de efeito estufa (CO₂ e CH₄), o excesso de lixo provoca contaminação do solo e dos lençóis freáticos pelo chorume, poluição de rios e oceanos por plásticos e microplásticos, perda de biodiversidade, esgotamento de recursos naturais e saturação rápida dos aterros sanitários.</p>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-trigger" type="button" aria-expanded="false">
+              <span>3. Como esse problema está presente no cotidiano dos estudantes da UTFPR?</span>
+              <span class="acc-icon">+</span>
+            </button>
+            <div class="acc-panel">
+              <p>No uso diário de copos plásticos descartáveis nos bebedouros, nas embalagens de lanches e deliveries consumidos entre as aulas, no consumo impulsivo de roupas fast fashion e acessórios baratos pela internet, e na impressão desnecessária de materiais acadêmicos.</p>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-trigger" type="button" aria-expanded="false">
+              <span>4. O que podemos fazer na prática para mudar essa realidade?</span>
+              <span class="acc-icon">+</span>
+            </button>
+            <div class="acc-panel">
+              <p>Inverter a pirâmide do consumo: primeiro repensar a real necessidade de cada compra, recusar descartáveis de uso único, reduzir embalagens, reutilizar objetos (garrafas, cadernos, roupas, cabos) e, por fim, destinar corretamente o que sobrar para a coleta seletiva.</p>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-trigger" type="button" aria-expanded="false">
+              <span>5. Como podemos convencer outras pessoas a refletirem sobre seus hábitos?</span>
+              <span class="acc-icon">+</span>
+            </button>
+            <div class="acc-panel">
+              <p>Substituindo discursos abstratos por dados concretos, ferramentas interativas (como a calculadora de impacto e o quiz deste site), exemplos próximos da realidade universitária e ações coletivas no campus — mostrando que consumir menos não é perder qualidade de vida, mas ganhar autonomia, economia financeira e futuro climático.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. SEÇÃO 6 – QUIZ INTERATIVO GAMIFICADO -->
+  <section class="alt-section" id="quiz">
+    <div class="container">
+      <div class="section-header u-center-header reveal">
+        <span class="section-tag amber">06 // Quiz Interativo</span>
+        <h2>Qual é o <span class="highlight-amber">peso da sua lixeira</span>?</h2>
+        <p>
+          Responda 5 perguntas rápidas sobre seus hábitos diários, receba feedback imediato em cada questão e descubra seu perfil de consumo na UTFPR.
+        </p>
+      </div>
+
+      <div class="quiz-container reveal">
+        <!-- Corpo das Perguntas -->
+        <div id="quizBody">
+          <div class="quiz-progress-wrap">
+            <div class="quiz-progress-meta">
+              <span id="questionCounter">Pergunta 1 de 5</span>
+              <span id="progressPercent">20%</span>
+            </div>
+            <div class="quiz-progress-bar">
+              <div class="quiz-progress-fill" id="progressFill"></div>
+            </div>
+          </div>
+
+          <h3 class="quiz-question" id="questionText">Carregando pergunta...</h3>
+          <div class="quiz-options" id="optionsContainer"></div>
+
+          <!-- Feedback Educativo Imediato -->
+          <div class="quiz-feedback" id="quizFeedback" aria-live="polite"></div>
+          <div class="quiz-next-wrap">
+            <button class="btn btn-primary hidden" type="button" id="nextQuestionBtn">Próxima Pergunta →</button>
+          </div>
+        </div>
+
+        <!-- Resultado Final -->
+        <div class="quiz-result" id="quizResult">
+          <div class="result-card-share" id="shareableResultCard">
+            <span class="result-badge" id="resultBadge">Perfil Identificado</span>
+            <h3 class="result-title" id="resultTitle">Título do Perfil</h3>
+            <p class="result-summary" id="resultSummary">Resumo personalizado.</p>
+          </div>
+
+          <div class="result-tips">
+            <h4>Missões práticas para aplicar esta semana na UTFPR:</h4>
+            <ul id="resultTipsList"></ul>
+          </div>
+
+          <div class="result-actions">
+            <button class="btn btn-primary" type="button" id="restartQuizBtn">Refazer Quiz</button>
+            <button class="btn btn-secondary" type="button" id="copyResultBtn">Copiar meu resultado para compartilhar</button>
+          </div>
+          <span class="copy-feedback" id="quizCopyFeedback"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="interativos" class="alt-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">CENTRAL DE INTERATIVOS</span>
+        <h2>Explore, responda e <span class="highlight-emerald">participe</span></h2>
+        <p>Acesse as ferramentas do projeto em um só lugar.</p>
+      </div>
+      <div class="interactive-shortcuts">
+        <a class="interactive-shortcut" href="#calculadora"><strong>Calculadora de impacto</strong><span>Estime seus hábitos de consumo.</span></a>
+        <a class="interactive-shortcut" href="#quiz"><strong>Quiz diagnóstico</strong><span>Descubra seu perfil de consumo.</span></a>
+        <a class="interactive-shortcut" href="#formulario"><strong>Formulário coletivo</strong><span>Responda e veja as médias do público.</span></a>
+        <a class="interactive-shortcut" href="#mural"><strong>Compromisso ambiental</strong><span>Registre uma ação para mudar hábitos.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="formulario">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">PESQUISA DE HÁBITOS</span>
+        <h2>Como é o consumo <span class="highlight-emerald">da comunidade?</span></h2>
+        <p>Responda com estimativas. As médias são calculadas com as respostas salvas neste navegador.</p>
+      </div>
+      <div class="survey-layout">
+        <form class="pledge-form" id="surveyForm" novalidate>
+          <h3>Formulário de hábitos</h3>
+          <div class="form-group"><label for="surveyEmail">E-mail (identificador local)</label><input id="surveyEmail" type="email" autocomplete="email" placeholder="voce@exemplo.com" required><small class="field-hint">Não enviamos nem verificamos o e-mail. Ele só evita respostas repetidas neste navegador.</small></div>
+          <div class="form-group"><label for="surveyWaste">Quanto lixo você acredita gerar por semana? (kg)</label><input id="surveyWaste" type="number" min="0" max="100" step="0.1" required></div>
+          <div class="form-group"><label for="surveyDelivery">Quantas vezes pede delivery por semana?</label><input id="surveyDelivery" type="number" min="0" max="50" step="1" required></div>
+          <div class="form-group"><label for="surveyCups">Quantos copos descartáveis usa por semana?</label><input id="surveyCups" type="number" min="0" max="500" step="1" required></div>
+          <div class="form-group"><label for="surveyCar">Quanto tempo anda de carro por semana? (horas)</label><input id="surveyCar" type="number" min="0" max="168" step="0.5" required></div>
+          <div class="form-group"><label for="surveyBottles">Quantas garrafas descartáveis usa por semana?</label><input id="surveyBottles" type="number" min="0" max="500" step="1" required></div>
+          <div class="form-group"><label for="surveyRecycling">Quantos dias por semana separa recicláveis?</label><input id="surveyRecycling" type="number" min="0" max="7" step="1" required></div>
+          <button class="btn btn-primary u-full-width" type="submit">Enviar respostas</button>
+          <p class="form-status-msg hidden" id="surveyStatus" role="status"></p>
+        </form>
+        <div class="pledge-board"><h3>Médias das respostas</h3><p id="surveyResponseCount">Ainda não há respostas neste navegador.</p><div id="surveyAverages" class="survey-averages" aria-live="polite"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. SEÇÃO 7 – MURAL DIGITAL DE COMPROMISSOS AMBIENTAIS -->
+  <section id="mural">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">07 // Ação Coletiva no Campus</span>
+        <h2>Mural de <span class="highlight-emerald">Compromissos Ambientais</span> — UTFPR-CM</h2>
+        <p>
+          Transforme reflexão em atitude! Escolha uma mudança real para adotar no campus e registre seu compromisso no mural digital da comunidade acadêmica.
+        </p>
+      </div>
+
+      <div class="pledge-layout reveal">
+        <!-- Formulário de Compromisso -->
+        <form class="pledge-form" id="pledgeForm" novalidate>
+          <h3>Assinar Compromisso</h3>
+
+          <div class="form-group">
+            <label for="pledgeEmail">E-mail (identificador local)</label>
+            <input type="email" id="pledgeEmail" placeholder="voce@exemplo.com" autocomplete="email" required />
+            <small class="field-hint">Protótipo: não há verificação nem envio. O e-mail é usado apenas para evitar duplicatas neste navegador.</small>
+          </div>
+          <div class="form-group">
+            <label for="pledgeName">Seu nome ou apelido</label>
+            <input type="text" id="pledgeName" placeholder="Ex: Ana Clara / Lucas M." maxlength="35" autocomplete="off" required />
+            <small class="field-hint">Apenas letras, espaços ou iniciais (2 a 35 caracteres).</small>
+          </div>
+
+          <div class="form-group">
+            <label for="pledgeCourse">Curso / Turma na UTFPR</label>
+            <select id="pledgeCourse" required>
+              <option value="Info para Internet">Técnico em Informática para Internet</option>
+              <option value="Alimentos / Química">Técnico em Alimentos / Química</option>
+              <option value="Ciência da Computação">Ciência da Computação</option>
+              <option value="Engenharia Ambiental">Engenharia Ambiental</option>
+              <option value="Engenharia Eletrônica / Civil">Engenharia Eletrônica / Civil</option>
+              <option value="Servidor(a) / Docente">Servidor(a) / Docente UTFPR</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="pledgeAction">Meu compromisso prático:</label>
+            <select id="pledgeAction" required>
+              <option value="Aposentar copos descartáveis e usar minha própria garrafa no campus">
+                🥤 Aposentar copos descartáveis e usar minha garrafa (-4,5 kg lixo/ano)
+              </option>
+              <option value="Recusar talheres, sachês e sacolas extras em pedidos de delivery">
+                🥡 Recusar descartáveis extras no delivery (-6,0 kg lixo/ano)
+              </option>
+              <option value="Aplicar a regra das 72h antes de qualquer compra online por impulso">
+                🛒 Aplicar a regra das 72h contra compras impulsivas (-8,5 kg lixo/ano)
+              </option>
+              <option value="Reutilizar folhas de rascunho e reduzir impressões desnecessárias">
+                📄 Reduzir impressões e reutilizar papel (-3,5 kg lixo/ano)
+              </option>
+              <option value="Participar de trocas, doações ou consertos antes de descartar itens">
+                ♻️ Priorizar troca, conserto e reuso antes de descartar (-7,0 kg lixo/ano)
+              </option>
+              <option value="Levar talheres e guardanapo reutilizáveis para refeições fora de casa">
+                🥪 Levar talheres e guardanapo reutilizáveis para refeições fora de casa (-4,0 kg lixo/ano)
+              </option>
+              <option value="Recusar sacolas descartáveis e levar uma ecobag">
+                🛍️ Recusar sacolas descartáveis e levar uma ecobag (-2,5 kg lixo/ano)
+              </option>
+              <option value="Encaminhar pilhas e eletrônicos para pontos de coleta adequados">
+                🔋 Encaminhar pilhas e eletrônicos para pontos de coleta adequados (-1,5 kg lixo/ano)
+              </option>
+              <option value="Separar corretamente recicláveis limpos e secos">
+                🥫 Separar corretamente recicláveis limpos e secos (-9,0 kg lixo/ano)
+              </option>
+              <option value="Reutilizar frascos e embalagens sempre que for seguro">
+                🧴 Reutilizar frascos e embalagens sempre que for seguro (-3,0 kg lixo/ano)
+              </option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary u-full-width">
+            Registrar meu compromisso
+          </button>
+          <p class="form-status-msg hidden" id="pledgeStatusMsg" role="alert"></p>
+        </form>
+
+        <!-- Feed do Mural + Impacto Coletivo -->
+        <div class="pledge-board">
+          <div class="pledge-stats-bar">
+            <div>
+              <strong id="totalPledgesCount">4</strong>
+              <span>Estudantes comprometidos</span>
+            </div>
+            <div>
+              <strong id="totalSavedKg">22,5 kg</strong>
+              <span>Resíduos evitados/ano</span>
+            </div>
+          </div>
+
+          <div class="pledge-list" id="pledgeList">
+            <!-- Renderizado via DOM seguro em app.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>SEM CACHE NO PLANETA</h4>
+          <p class="u-mb-md">
+            Campanha educativa sobre <strong>Consumismo, Geração de Resíduos e Mudanças Climáticas</strong> desenvolvida para sensibilizar os estudantes da UTFPR – Campus Campo Mourão.
+          </p>
+          <p class="footer-meta">
+            Curso Técnico Integrado em Informática para Internet • Geografia I • 4º Bimestre / 2026
+          </p>
+          <div class="security-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <span>CSP Estrita • Zero Rastreamento • QR Code 100% Offline</span>
+          </div>
+        </div>
+
+        <div>
+          <h4>Equipe Desenvolvedora (3 Alunos)</h4>
+          <ul>
+            <li>• Arthur Henrique do Amaral</li>
+            <li>• Victor Humberto Santiago dos Santos</li>
+            <li>• Pedro Henrique Scramocin</li>
+          </ul>
+          <h4 class="u-mt-lg">Fontes Científicas</h4>
+          <ul>
+            <li>• ONU / PNUMA — Global Waste Management Outlook</li>
+            <li>• ABREMA — Panorama dos Resíduos Sólidos no Brasil</li>
+            <li>• IPCC — Sexto Relatório de Avaliação (GEE: CH₄ e CO₂)</li>
+          </ul>
+        </div>
+
+        <div class="qr-box">
+          <h4>Divulgue no Corredor Central &amp; RU!</h4>
+          <p>
+            Compartilhe o link desta página nos grupos das turmas ou gere o QR Code offline para cartazes no campus.
+          </p>
+          <div class="qr-actions">
+            <button class="btn btn-secondary" type="button" id="copyLinkFooter">Copiar link do site</button>
+            <button class="btn btn-primary" type="button" id="openQrModalBtn">Ver QR Code</button>
+          </div>
+          <span class="copy-feedback" id="copyFeedback"></span>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>UTFPR — Universidade Tecnológica Federal do Paraná | Câmpus Campo Mourão</span>
+        <span>Apresentação: 02/12/2026 • Geografia I</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL DE QR CODE OFFLINE -->
+  <div class="modal-backdrop hidden" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+    <div class="modal-card">
+      <button class="modal-close" type="button" id="closeQrModalBtn" aria-label="Fechar modal">✕</button>
+      <span class="section-tag u-mb-sm">GERADO LOCALMENTE • OFFLINE</span>
+      <h3 id="qrModalTitle">QR Code da Campanha</h3>
+      <p>Aponte a câmera do celular para acessar o site interativo <strong>Sem Cache no Planeta</strong> diretamente no campus:</p>
+      <div class="qr-preview" id="qrImageContainer"></div>
+      <small id="qrUrlDisplay"></small>
+    </div>
+  </div>
+
+  <!-- Scripts Modulares (Security Guard primeiro, depois App) -->
+  <script src="security.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

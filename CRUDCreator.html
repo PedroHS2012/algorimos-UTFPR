@@ -328,7 +328,7 @@
                 "}\n" +
 
                 "function voltar() {\n" +
-                "if(alterado != null){\n" +
+                "if(document.getElementById('btVoltar').value == 'Desfazer'){\n" +
                 "fInserir(";
             for (let i = 0; i < atributos.length; i++) {
                 string += " alterado." + atributos[i][1] + ",";
